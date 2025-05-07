@@ -1,0 +1,63 @@
+.home-gradient {
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #ff416c, #ff4b2b, #1e3c72, #2a5298);
+    background-size: 400% 400%;
+    animation: gradientShift 10s ease infinite;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+  }
+  
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  .animate-fade-in {
+    opacity: 0;
+    animation: fadeInUp 1s forwards;
+  }
+  
+  .delay-1s {
+    animation-delay: 1s;
+  }
+  
+  .delay-2s {
+    animation-delay: 2s;
+  }
+  
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Additional styling for larger text */
+  .home-gradient h1 {
+    font-size: 3rem;
+    font-weight: 700;
+  }
+  
+  .home-gradient p {
+    font-size: 1.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  
