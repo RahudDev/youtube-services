@@ -12,7 +12,7 @@ const Home = () => {
         <p className="lead mb-4 animate-drop delay-1s">
           Get real subscribers, watch hours, likes & more — 100% safe and fast delivery.
         </p>
-        <Link to="/m/services" className="btn btn-light btn-lg animate-drop delay-2s shadow">
+        <Link to="/services" className="btn btn-light btn-lg animate-drop delay-2s shadow">
           Explore Services
         </Link>
       </div>
@@ -51,7 +51,7 @@ const Home = () => {
       {/* CTA Section */}
       <div className="text-center py-5 mt-5 bg-dark text-white">
         <h2 className="mb-3 animate-drop delay-10s">Ready to boost your YouTube channel?</h2>
-        <Link to="/m/services" className="btn btn-outline-light btn-lg shadow animate-drop delay-11s">
+        <Link to="/services" className="btn btn-outline-light btn-lg shadow animate-drop delay-11s">
           View Our Services
         </Link>
       </div>
