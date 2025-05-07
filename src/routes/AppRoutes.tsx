@@ -7,10 +7,10 @@ import Login from '../pages/Login';
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Landing page stays at root */}
+      {/* Root landing page */}
       <Route path="/" element={<Home />} />
-
-      {/* Other pages under /m/ prefix */}
+      
+      {/* Sub-pages under /m/ */}
       <Route path="/m/services" element={<Services />} />
       <Route path="/m/login" element={<Login />} />
     </Routes>
