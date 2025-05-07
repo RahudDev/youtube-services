@@ -8,7 +8,7 @@ const Home = () => {
     <div className="home-gradient text-white">
       {/* Hero Section */}
       <div className="container text-center py-5">
-        <h1 className="display-3 fw-bold mb-3 animate-drop">Grow Your YouTube Channel 🚀</h1>
+        <h1 className="display-3 fw-bold mb-3 animate-drop">Boost Your YouTube Channel 🚀</h1>
         <p className="lead mb-4 animate-drop delay-1s">
           Get real subscribers, watch hours, likes & more — 100% safe and fast delivery.
         </p>

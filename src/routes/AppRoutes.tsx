@@ -7,12 +7,9 @@ import Login from '../pages/Login';
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Root landing page */}
       <Route path="/" element={<Home />} />
-      
-      {/* Sub-pages under /m/ */}
-      <Route path="/m/services" element={<Services />} />
-      <Route path="/m/login" element={<Login />} />
+      <Route path="/services" element={<Services />} />
+      <Route path="/login" element={<Login />} />
     </Routes>
   );
 };
