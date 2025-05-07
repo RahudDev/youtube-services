@@ -1,8 +1,7 @@
 .home-gradient {
     min-height: 100vh;
-    background: linear-gradient(-45deg, #ff416c, #ff4b2b, #1e3c72, #2a5298);
+   
     background-size: 400% 400%;
-    animation: gradientShift 10s ease infinite;
     padding-top: 4rem;
     padding-bottom: 4rem;
     display: flex;
@@ -10,44 +9,9 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: white;
   }
   
-  @keyframes gradientShift {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
   
-  .animate-fade-in {
-    opacity: 0;
-    animation: fadeInUp 1s forwards;
-  }
-  
-  .delay-1s {
-    animation-delay: 1s;
-  }
-  
-  .delay-2s {
-    animation-delay: 2s;
-  }
-  
-  @keyframes fadeInUp {
-    0% {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
   
   /* Additional styling for larger text */
   .home-gradient h1 {
@@ -60,4 +24,69 @@
     max-width: 700px;
     margin: 0 auto;
   }
+
+
+  /* Home.css */
+.animate-drop {
+    animation: dropIn 1s ease-out forwards;
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  
+  @keyframes dropIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Delay for different elements */
+  .delay-1s {
+    animation-delay: 1s;
+  }
+  
+  .delay-2s {
+    animation-delay: 2s;
+  }
+  
+  .delay-3s {
+    animation-delay: 3s;
+  }
+  
+  .delay-4s {
+    animation-delay: 4s;
+  }
+  
+  .delay-5s {
+    animation-delay: 5s;
+  }
+  
+  .delay-6s {
+    animation-delay: 6s;
+  }
+  
+  .delay-7s {
+    animation-delay: 7s;
+  }
+  
+  .delay-8s {
+    animation-delay: 8s;
+  }
+  
+  .delay-9s {
+    animation-delay: 9s;
+  }
+  
+  .delay-10s {
+    animation-delay: 10s;
+  }
+  
+  .delay-11s {
+    animation-delay: 11s;
+  }
+  
   
