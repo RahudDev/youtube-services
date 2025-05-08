@@ -5,7 +5,7 @@ import './Home.css'; // Custom styles for animation
 
 const Home = () => {
   return (
-    <div className="home-gradient text-white">
+    <div className="home-gradient">
       {/* Hero Section */}
       <div className="container text-center py-5">
         <h1 className="display-3 fw-bold mb-3 animate-drop">Boost Your YouTube Channel 🚀</h1>
@@ -19,7 +19,7 @@ const Home = () => {
 
       {/* Features Section */}
       <div className="container mt-5">
-        <h2 className="text-center mb-4 fw-semibold text-white animate-drop delay-3s">Why Choose Us?</h2>
+        <h2 className="text-center mb-4 fw-semibold animate-drop delay-3s">Why Choose Us?</h2>
         <div className="row text-center">
           <div className="col-md-4 mb-4">
             <div className="card h-100 shadow-sm border-0">
