@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';  // Ensure the CSS file is imported
 import AppRoutes from './routes/AppRoutes';
+import {API_URL} from './config';
+
+const API_MAIN = API_URL.split(',');
+export const API = API_MAIN[1];
+
 
 const App = () => {
   const [darkMode, setDarkMode] = useState<boolean>(() => {
