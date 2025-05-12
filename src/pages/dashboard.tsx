@@ -60,6 +60,9 @@ const Dashboard = () => {
           <Link to="/services" className="btn btn-dark btn-lg animate-drop delay-2s shadow">
             Explore Services
           </Link>
+           <Link to="/channel-info" className="btn btn-dark btn-lg animate-drop delay-2s shadow">
+            Your Channel Insight
+          </Link>
         </div>
       </div>
     </div>
