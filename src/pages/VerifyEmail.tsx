@@ -19,7 +19,8 @@ const VerifyEmail = () => {
   }, [seconds]);
 
   const handleResendVerification = async () => {
-    const email = localStorage.getItem('email');
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    const email = userData.email;
     if (!email) {
       console.error('Email not found in localStorage');
       return;

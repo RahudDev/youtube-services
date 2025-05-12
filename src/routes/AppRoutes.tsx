@@ -24,7 +24,7 @@ const AppRoutes = () => {
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/completed" element={<YoutubeSuccess />} />
       <Route path="/signup" element={<AuthGuard redirectIfVerified="/dashboard" redirectIfNotVerified=""> <SignUp /> </AuthGuard>} />
-      <Route path="/verifyemail" element={<VerifyEmail />} />
+      <Route path="/verifyemail" element={<AuthGuard redirectIfVerified="/dashboard" redirectIfNotVerified=""> <VerifyEmail /> </AuthGuard>} />
       <Route path="/confirm-email" element={<EmailVerificationConfirm />} />
       <Route path="/dashboard" element={<AuthGuard redirectIfVerified="" redirectIfNotVerified="/login"> <Dashboard /> </AuthGuard> } />
       <Route path="/channel-info" element={<AuthGuard redirectIfVerified="" redirectIfNotVerified="/login"> <Channeldata /> </AuthGuard> } />               
