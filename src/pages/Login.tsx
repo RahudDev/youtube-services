@@ -1,21 +1,55 @@
-// src/pages/Login.tsx
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { API } from '../App';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Logging in with:', { email, password });
-    // Add API call here
+    setError('');
+
+    try {
+      const response = await axios.post(`${API}/api/auth/login`, {
+        email,
+        password,
+      });
+
+      const user = response.data.user;
+
+      // Validation
+      if (!user.email || !user.uuid || !user.isVerified) {
+        setError("Your account is not verified or missing required information.");
+        return;
+      }
+
+      // Store only required data
+      const safeUser = {
+        name: user.name,
+        email: user.email,
+        username: user.username,
+      };
+      localStorage.setItem('user', JSON.stringify(safeUser));
+
+      window.location.reload();
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Login failed. Please try again.');
+    }
   };
 
   return (
     <div className="container mt-5" style={{ maxWidth: '400px' }}>
       <h2 className="text-center">Login</h2>
       <form onSubmit={handleLogin}>
+        {error && (
+          <div className="alert alert-danger py-2" role="alert">
+            {error}
+          </div>
+        )}
+
         <div className="form-group mb-3">
           <label>Email</label>
           <input
@@ -26,6 +60,7 @@ const Login = () => {
             required
           />
         </div>
+
         <div className="form-group mb-4">
           <label>Password</label>
           <input
@@ -36,9 +71,14 @@ const Login = () => {
             required
           />
         </div>
+
         <button type="submit" className="btn btn-primary w-100">
           Login
         </button>
+
+         <p className="text-center mt-3">
+          <Link to="/forgot-password">Forgot Password?</Link>
+        </p>
 
         <p className="text-center mt-3">
           Don't have an account? <Link to="/signup">Sign up here</Link>

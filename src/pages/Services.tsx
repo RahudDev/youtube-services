@@ -75,33 +75,50 @@ const handleInputChange = (id: string, value: string) => {
 };
 
 
-  const handleCheckout = async (service: any) => {
-    const quantity = quantities[service.id];
+ const handleCheckout = async (service: any) => {
+  const quantity = quantities[service.id];
 
-   if (quantity <= 0 && quantity > 100) {
+  if (!quantity || quantity <= 0 || quantity > 100) {
     setWarning('Quantity must be between 1 and 100');
     return;
-   }
+  }
 
+  const userData = JSON.parse(localStorage.getItem('user') || '{}');
+  const useremail = userData.email;
 
-    const cart = [{ id: service.id, quantity }];
-    try {
-      const response = await fetch(`${API}/api/paypal/orders`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ cart }),
-      });
+  if (!useremail) {
+    window.location.href = "/signup"; // redirect if no email (not logged in)
+    return;
+  }
 
-      if (!response.ok) throw new Error('Failed to create order');
+  try {
+    const verifyRes = await fetch(`${API}/api/auth/check-verification?email=${useremail}`);
+    const verifyData = await verifyRes.json();
 
-      const { id } = await response.json();
-      window.location.href = `https://www.paypal.com/checkoutnow?token=${id}`;
-    } catch (error) {
-      console.error('Checkout error:', error);
+    if (!verifyData.verified) {
+      window.location.href = "/signup"; // not verified
+      return;
     }
-  };
+
+    // Proceed with PayPal checkout
+    const cart = [{ id: service.id, quantity }];
+    const response = await fetch(`${API}/api/paypal/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ cart }),
+    });
+
+    if (!response.ok) throw new Error('Failed to create order');
+
+    const { id } = await response.json();
+    window.location.href = `https://www.paypal.com/checkoutnow?token=${id}`;
+  } catch (error) {
+    console.error('Checkout error:', error);
+  }
+};
+
 
   return (
     <div className="container py-5">

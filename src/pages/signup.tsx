@@ -12,11 +12,34 @@ const SignUp = () => {
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
 
+  // Function to check if the username exists on YouTube
+  const checkUsernameExists = async () => {
+    try {
+      const response = await axios.post(`${API}/api/youtube/check-youtube-username`, { username });
+      return response.data.exists; // Assuming the backend returns { exists: true/false }
+    } catch (err) {
+      setError('Failed to verify username. Please try again.');
+      return false;
+    }
+  };
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!username.startsWith('@')) {
       setError("Username must start with '@'");
+      return;
+    }
+
+     if (password.length < 6) {
+      return setError('Password must be at least 6 characters long.');
+    }
+
+    // Step 1: Check if the username exists on YouTube
+    const usernameExists = await checkUsernameExists();
+
+    if (!usernameExists) {
+      setError('YouTube channel with this username not found.');
       return;
     }
 
@@ -32,10 +55,10 @@ const SignUp = () => {
       });
 
       setSuccess(response.data.message);
-      
-        localStorage.setItem('name', name);
-        localStorage.setItem('username', username);
-        localStorage.setItem('email', email);
+
+      localStorage.setItem('name', name);
+      localStorage.setItem('username', username);
+      localStorage.setItem('email', email);
 
       setUsername('');
       setName('');
