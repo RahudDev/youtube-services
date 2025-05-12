@@ -56,9 +56,12 @@ const SignUp = () => {
 
       setSuccess(response.data.message);
 
-      localStorage.setItem('name', name);
-      localStorage.setItem('username', username);
-      localStorage.setItem('email', email);
+     const safeUser = {
+        name: name,
+        email: email,
+        username: username,
+      };
+      localStorage.setItem('user', JSON.stringify(safeUser));
 
       setUsername('');
       setName('');
