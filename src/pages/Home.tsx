@@ -12,8 +12,8 @@ const Home = () => {
         <p className="lead mb-4 animate-drop delay-1s">
           Get real subscribers, watch hours, likes & more — 100% safe and fast delivery.
         </p>
-        <Link to="/services" className="btn btn-light btn-lg animate-drop delay-2s shadow">
-          Explore Services
+        <Link to="/signup" className="btn btn-light btn-lg animate-drop delay-2s shadow">
+          Get started
         </Link>
       </div>
 
