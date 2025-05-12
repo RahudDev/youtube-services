@@ -1,5 +1,6 @@
 // src/pages/Login.tsx
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -38,6 +39,10 @@ const Login = () => {
         <button type="submit" className="btn btn-primary w-100">
           Login
         </button>
+
+        <p className="text-center mt-3">
+          Don't have an account? <Link to="/signup">Sign up here</Link>
+        </p>
       </form>
     </div>
   );
