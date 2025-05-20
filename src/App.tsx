@@ -39,10 +39,17 @@ const App = () => {
 
   CapacitorApp.addListener('appUrlOpen', (event) => {
     const url = event.url;
-    if (url && url.includes('confirm-email')) {
-      const token = new URL(url).searchParams.get('token');
-      if (token) {
+    if (url) {
+      const parsedUrl = new URL(url);
+      const pathname = parsedUrl.pathname;
+      const token = parsedUrl.searchParams.get('token');
+
+      if (pathname === '/confirm-email' && token) {
         window.location.href = `/confirm-email?token=${token}`;
+      } else if (pathname === '/reset-password' && token) {
+        window.location.href = `/reset-password?token=${token}`;
+      } else if (pathname === '/completed' && token) {
+        window.location.href = `/completed?token=${token}`;
       }
     }
   }).then((res) => {

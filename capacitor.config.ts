@@ -5,8 +5,8 @@ const config: CapacitorConfig = {
   appName: 'MilkyWayCluster',
   webDir: 'build',
   server: {
-    url: 'https://milkywaycluster.com',
-    cleartext: false
+    url: 'https://www.milkywaycluster.com',
+    cleartext: true
   }
 };
 
