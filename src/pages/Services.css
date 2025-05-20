@@ -1,0 +1,15 @@
+.card:hover {
+  transform: scale(1.02);
+  transition: transform 0.3s ease-in-out;
+}
+
+.card {
+  height: 100px;
+  width: 100px;
+}
+
+
+.selected-card {
+  border: 3px solid red !important;
+  box-shadow: 0 0 10px red !important;
+}

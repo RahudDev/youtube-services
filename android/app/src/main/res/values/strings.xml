@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MilkyWayCluster</string>
+    <string name="title_activity_main">MilkyWayCluster</string>
+    <string name="package_name">com.milkywaycluster.app</string>
+    <string name="custom_url_scheme">com.milkywaycluster.app</string>
+</resources>

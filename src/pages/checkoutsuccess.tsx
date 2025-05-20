@@ -6,7 +6,7 @@ type PurchasedItem = {
   image?: string;
   name?: string;
   quantity?: number;
-  unitPrice?: number;
+  price?: number;
 };
 
 const PaypalSuccess = () => {
@@ -47,7 +47,7 @@ const PaypalSuccess = () => {
           setPurchasedItems(jsonResponse.purchasedItems);
 
           const totalAmount = jsonResponse.purchasedItems.reduce((sum: number, item: PurchasedItem) => {
-            const price = typeof item.unitPrice === "number" ? item.unitPrice : 0;
+            const price = typeof item.price === "number" ? item.price : 0;
             const quantity = typeof item.quantity === "number" ? item.quantity : 0;
             return sum + price * quantity;
           }, 0);
@@ -104,7 +104,7 @@ const PaypalSuccess = () => {
                     </p>
                     <p className="card-text mb-0">
                       <strong>Price:</strong>{" "}
-                      ${typeof item.unitPrice === "number" ? item.unitPrice.toFixed(2) : "0.00"} USD
+                      ${typeof item.price === "number" ? item.price.toFixed(2) : "0.00"} USD
                     </p>
                   </div>
                 </div>

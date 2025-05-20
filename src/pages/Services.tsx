@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { API } from "../App";
 
-
-
 const Services = () => {
   const services = [
     {
       id: 'YT_001',
       name: 'YouTube Subscribers',
-      price: '$10 / 1000 subs',
+      price: '$1 / 100 subs',
       image: 'https://img.icons8.com/color/96/youtube-play.png',
     },
     {
@@ -34,91 +32,102 @@ const Services = () => {
 
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
   const [warning, setWarning] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleQuantityChange = (id: string, increment: boolean) => {
-  setQuantities((prev) => {
-    const current = prev[id] ?? 0;
-    const newQuantity = Math.max(0, Math.min(100, current + (increment ? 1 : -1)));
-    return {
-      ...prev,
-      [id]: newQuantity,
-    };
-  });
-  setWarning('');
-};
-
-const handleInputChange = (id: string, value: string) => {
-  if (value === '') {
-    setQuantities((prev) => ({
-      ...prev,
-      [id]: 0, // Set to 0 instead of empty or 1
-    }));
+    setQuantities((prev) => {
+      const current = prev[id] ?? 0;
+      const newQuantity = Math.max(0, Math.min(100, current + (increment ? 1 : -1)));
+      return { ...prev, [id]: newQuantity };
+    });
     setWarning('');
-    return;
-  }
+  };
 
-  const parsedValue = parseInt(value, 10);
-  if (!isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 100) {
-    setQuantities((prev) => ({
-      ...prev,
-      [id]: parsedValue,
-    }));
-
-    if (parsedValue === 0) {
-      setWarning('Quantity must be between 1 and 100');
-    } else {
+  const handleInputChange = (id: string, value: string) => {
+    if (value === '') {
+      setQuantities((prev) => ({ ...prev, [id]: 0 }));
       setWarning('');
-    }
-  } else {
-    setWarning('Quantity must be between 1 and 100');
-  }
-};
-
-
- const handleCheckout = async (service: any) => {
-  const quantity = quantities[service.id];
-
-  if (!quantity || quantity <= 0 || quantity > 100) {
-    setWarning('Quantity must be between 1 and 100');
-    return;
-  }
-
-  const userData = JSON.parse(localStorage.getItem('user') || '{}');
-  const useremail = userData.email;
-
-  if (!useremail) {
-    window.location.href = "/signup"; // redirect if no email (not logged in)
-    return;
-  }
-
-  try {
-    const verifyRes = await fetch(`${API}/api/auth/check-verification?email=${useremail}`);
-    const verifyData = await verifyRes.json();
-
-    if (!verifyData.verified) {
-      window.location.href = "/signup"; // not verified
       return;
     }
 
-    // Proceed with PayPal checkout
-    const cart = [{ id: service.id, quantity }];
-    const response = await fetch(`${API}/api/paypal/orders`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ cart }),
-    });
+    const parsed = parseInt(value, 10);
+    if (!isNaN(parsed) && parsed >= 0 && parsed <= 100) {
+      setQuantities((prev) => ({ ...prev, [id]: parsed }));
+      setWarning(parsed === 0 ? 'Quantity must be between 1 and 100' : '');
+    } else {
+      setWarning('Quantity must be between 1 and 100');
+    }
+  };
 
-    if (!response.ok) throw new Error('Failed to create order');
+  const handleCheckout = async (service: any) => {
+    const quantity = quantities[service.id];
 
-    const { id } = await response.json();
-    window.location.href = `https://www.paypal.com/checkoutnow?token=${id}`;
-  } catch (error) {
-    console.error('Checkout error:', error);
-  }
-};
+    if (!quantity || quantity < 1 || quantity > 100) {
+      setWarning('Quantity must be between 1 and 100');
+      return;
+    }
 
+    setLoading(true);
+    setWarning('');
+
+    try {
+      // Get user data from localStorage
+      const userData = JSON.parse(localStorage.getItem('user') || '{}');
+      const useremail = userData.email;
+
+      if (!useremail) {
+        window.location.href = "/signup";
+        return;
+      }
+
+      // Check if user is verified
+      const verifyRes = await fetch(`${API}/api/auth/check-verification?email=${useremail}`);
+      const verifyData = await verifyRes.json();
+
+      if (!verifyData.verified) {
+        window.location.href = "/signup";
+        return;
+      }
+
+      // Prepare cart with the selected service and quantity
+      const cart = [{ id: service.id, quantity }];
+      
+      console.log('Sending cart to backend:', cart);
+      
+      // Send request to create PayPal order
+      const response = await fetch(`${API}/api/paypal/orders`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(cart),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to create PayPal order');
+      }
+
+      const data = await response.json();
+      console.log('Order creation response:', data);
+
+      if (!data.jsonResponse || !data.jsonResponse.id) {
+        throw new Error('Invalid PayPal order response structure');
+      }
+
+      const orderId = data.jsonResponse.id;
+      
+      // Redirect to PayPal checkout
+     window.location.href = `https://www.paypal.com/checkoutnow?token=${orderId}`;
+      
+    } catch (err) {
+      console.error('Checkout process failed:', err);
+      setWarning(`Checkout failed: ${err instanceof Error ? err.message : 'Please try again later.'}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="container py-5">
@@ -138,9 +147,10 @@ const handleInputChange = (id: string, value: string) => {
                 <p className="card-text text-muted mb-2">{service.price}</p>
                 <div className="mb-3 d-flex align-items-center justify-content-center">
                   <label htmlFor={`qty-${service.id}`} className="me-2 mb-0 fw-medium">Qty:</label>
-                  <button
-                    className="btn btn-outline-secondary me-2"
+                  <button 
+                    className="btn btn-outline-secondary me-2" 
                     onClick={() => handleQuantityChange(service.id, false)}
+                    disabled={loading}
                   >
                     -
                   </button>
@@ -148,25 +158,35 @@ const handleInputChange = (id: string, value: string) => {
                     id={`qty-${service.id}`}
                     type="text"
                     value={quantities[service.id]?.toString() ?? '0'}
-                     onChange={(e) => handleInputChange(service.id, e.target.value.replace(/^0+(?=\d)/, ''))}
+                    onChange={(e) => handleInputChange(service.id, e.target.value.replace(/^0+(?=\d)/, ''))}
                     className="form-control text-center me-2"
                     style={{ width: '80px' }}
+                    disabled={loading}
                   />
-                  <button
-                    className="btn btn-outline-secondary"
+                  <button 
+                    className="btn btn-outline-secondary" 
                     onClick={() => handleQuantityChange(service.id, true)}
+                    disabled={loading}
                   >
                     +
                   </button>
                 </div>
                 {warning && (
-                  <div className="alert alert-warning text-center">{warning}</div>
+                  <div className="alert alert-warning text-center py-2 mb-3">{warning}</div>
                 )}
                 <button
                   className="btn btn-outline-success rounded-pill px-4"
                   onClick={() => handleCheckout(service)}
+                  disabled={loading}
                 >
-                  Checkout Now
+                  {loading ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                      Processing...
+                    </>
+                  ) : (
+                    'Checkout Now'
+                  )}
                 </button>
               </div>
             </div>
