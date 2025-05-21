@@ -25,12 +25,22 @@ const Dashboard = () => {
   return (
     <div className="container mt-5">
       {/* Navigation Bar */}
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold">Dashboard</h2>
-        <button className="btn btn-outline-danger" onClick={handleLogout}>
-          Logout
-        </button>
-      </div>
+    <div className="d-flex justify-content-between align-items-center mb-4">
+  <h2 className="fw-bold">Dashboard</h2>
+  <div className="d-flex align-items-center gap-2">
+    <button
+      className="btn btn-sm btn-outline-secondary"
+      onClick={() => navigate('/delete')}
+      style={{ opacity: 0.6 }}
+    >
+      Close Account
+    </button>
+    <button className="btn btn-outline-danger" onClick={handleLogout}>
+      Logout
+    </button>
+  </div>
+</div>
+
 
       {/* Main Card */}
       <div className="card shadow-lg border-0 rounded-4 p-4 animate__animated animate__fadeIn">
