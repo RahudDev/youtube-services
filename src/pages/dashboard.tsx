@@ -30,7 +30,7 @@ const Dashboard = () => {
   <div className="d-flex align-items-center gap-2">
     <button
       className="btn btn-sm btn-outline-secondary"
-      onClick={() => navigate('/delete')}
+      onClick={() => navigate('/deletion')}
       style={{ opacity: 0.6 }}
     >
       Close Account
