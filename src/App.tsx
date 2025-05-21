@@ -3,6 +3,7 @@ import { App as CapacitorApp } from '@capacitor/app';
 import './App.css';
 import AppRoutes from './routes/AppRoutes';
 import { API_URL } from './config';
+import Footer from './components/Footer';
 
 const API_MAIN = API_URL.split(',');
 export const API = API_MAIN[1];
@@ -67,11 +68,14 @@ const App = () => {
 
 
   return (
-    <div>
-      <button className="theme-toggle-btn" onClick={toggleTheme}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+       <main style={{ flex: 1 }}>
+         <button className="theme-toggle-btn" onClick={toggleTheme}>
         {darkMode ? '🌙' : '🌞'}
       </button>
       <AppRoutes />
+      </main>
+      <Footer/>
     </div>
   );
 };

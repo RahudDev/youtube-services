@@ -12,6 +12,8 @@ import ForgotPassword from '../pages/ForgotPassword';
 import ResetPassword from '../pages/ResetPassword';
 import AuthGuard from './authsecurity';
 import Channeldata from '../pages/ChannelInfo';
+import Terms from '../pages/Terms';
+import Privacy from '../pages/Privacy';
 
 
 const AppRoutes = () => {
@@ -23,6 +25,8 @@ const AppRoutes = () => {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/completed" element={<YoutubeSuccess />} />
+      <Route path="/terms" element={<Terms />} />
+      <Route path="/privacy" element={<Privacy />} />
       <Route path="/signup" element={<AuthGuard redirectIfVerified="/dashboard" redirectIfNotVerified=""> <SignUp /> </AuthGuard>} />
       <Route path="/verifyemail" element={<AuthGuard redirectIfVerified="/dashboard" redirectIfNotVerified=""> <VerifyEmail /> </AuthGuard>} />
       <Route path="/confirm-email" element={<EmailVerificationConfirm />} />
