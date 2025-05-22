@@ -1,0 +1,12 @@
+.video-stat-image {
+    width: 400px;
+    height: 300px;
+}
+
+
+@media (max-width: 768px) {
+    .video-stat-image{
+    width: 250px;
+    height: 200px;
+}
+}

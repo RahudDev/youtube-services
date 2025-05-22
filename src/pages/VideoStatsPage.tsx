@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API } from "../App";
+import './VideoStatsPage.css';
 
 interface VideoData {
   videoTitle: string;
@@ -79,7 +80,7 @@ const VideoStatsPage: React.FC = () => {
 
       {videoData && (
         <div className="mt-6 p-4 border rounded shadow-sm">
-          <img src={videoData.thumbnail} alt="Thumbnail"   className="w-full max-h-60 object-cover rounded mb-4 shadow" />
+          <img src={videoData.thumbnail} alt="Thumbnail"   className="w-full max-h-60 object-cover rounded mb-4 shadow video-stat-image" />
           <h3 className="text-xl font-bold">{videoData.videoTitle}</h3>
           <p><strong>Published:</strong> {new Date(videoData.publishedAt).toLocaleDateString()}</p>
           <p><strong>Duration:</strong> {videoData.duration}</p>
