@@ -1,11 +1,15 @@
 [
   {
-    "relation": ["delegate_permission/common.handle_all_urls"],
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
     "target": {
       "namespace": "android_app",
       "package_name": "com.milkywaycluster.app",
       "sha256_cert_fingerprints": [
-        "9A:F2:FD:52:58:B9:CC:75:15:FD:51:AE:64:5A:6F:C2:19:B1:D1:12:17:C6:8C:B1:D9:15:72:26:8D:86:88:AA"
+        "9A:F2:FD:52:58:B9:CC:75:15:FD:51:AE:64:5A:6F:C2:19:B1:D1:12:17:C6:8C:B1:D9:15:72:26:8D:86:88:AA",
+        "00:A6:FF:84:7D:B2:89:D5:5E:AA:0D:42:0A:57:D0:7A:95:5B:9B:3C:B9:9F:6D:49:70:FE:B9:01:2B:F5:C4:51"
       ]
     }
   }
