@@ -28,13 +28,13 @@
     <category android:name="android.intent.category.DEFAULT" />
     <category android:name="android.intent.category.BROWSABLE" />
       <data android:scheme="https"
-          android:host="milkywaycluster.com"
+          android:host="www.milkywaycluster.com"
           android:pathPrefix="/confirm-email" />
     <data android:scheme="https"
-          android:host="milkywaycluster.com"
+          android:host="www.milkywaycluster.com"
           android:pathPrefix="/reset-password" />
     <data android:scheme="https"
-          android:host="milkywaycluster.com"
+          android:host="www.milkywaycluster.com"
           android:pathPrefix="/completed" />
 </intent-filter>
 
