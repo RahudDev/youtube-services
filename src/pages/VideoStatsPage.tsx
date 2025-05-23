@@ -4,6 +4,7 @@ import { API } from "../App";
 import './VideoStatsPage.css';
 
 interface VideoData {
+  videoId: string;
   videoTitle: string;
   publishedAt: string;
   duration: string;
@@ -19,11 +20,12 @@ const VideoStatsPage: React.FC = () => {
   const [videoData, setVideoData] = useState<VideoData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isPlaying, setIsPlaying] = useState(false);
 
   // Load username from localStorage on mount
   useEffect(() => {
-      const userData = JSON.parse(localStorage.getItem('user') || '{}');
-      const username = userData.username;
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    const username = userData.username;
     if (username) {
       setUsername(username);
     }
@@ -34,6 +36,7 @@ const VideoStatsPage: React.FC = () => {
 
     setLoading(true);
     setError('');
+    setIsPlaying(false); // reset video playback
     try {
       const res = await axios.post(`${API}/api/youtube/get-video-info`, {
         username,
@@ -79,15 +82,41 @@ const VideoStatsPage: React.FC = () => {
       {error && <p className="text-red-500 mt-3">{error}</p>}
 
       {videoData && (
-        <div className="mt-6 p-4 border rounded shadow-sm">
-          <img src={videoData.thumbnail} alt="Thumbnail"   className="w-full max-h-60 object-cover rounded mb-4 shadow video-stat-image" />
-          <h3 className="text-xl font-bold">{videoData.videoTitle}</h3>
-          <p><strong>Published:</strong> {new Date(videoData.publishedAt).toLocaleDateString()}</p>
-          <p><strong>Duration:</strong> {videoData.duration}</p>
-          <p><strong>Views:</strong> {Number(videoData.views).toLocaleString()}</p>
-          <p><strong>Likes:</strong> {Number(videoData.likes).toLocaleString()}</p>
-          <p><strong>Comments:</strong> {Number(videoData.comments).toLocaleString()}</p>
-        </div>
+      <div className="mt-6 p-4 border rounded shadow-sm text-center">
+  {isPlaying ? (
+    <div className="video-frame mb-4">
+      <iframe
+        src={`https://www.youtube.com/embed/${videoData.videoId}?autoplay=1`}
+        title={videoData.videoTitle}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </div>
+  ) : (
+    <div className="thumbnail-wrapper mb-4">
+      <img
+        src={videoData.thumbnail}
+        alt="Thumbnail"
+        className="video-stat-image shadow rounded"
+      />
+      <button
+        className="play-button"
+        onClick={() => setIsPlaying(true)}
+      >
+        ▶ Play
+      </button>
+    </div>
+  )}
+
+  <h3 className="text-xl font-bold">{videoData.videoTitle}</h3>
+  <p><strong>Published:</strong> {new Date(videoData.publishedAt).toLocaleDateString()}</p>
+  <p><strong>Duration:</strong> {videoData.duration}</p>
+  <p><strong>Views:</strong> {Number(videoData.views).toLocaleString()}</p>
+  <p><strong>Likes:</strong> {Number(videoData.likes).toLocaleString()}</p>
+  <p><strong>Comments:</strong> {Number(videoData.comments).toLocaleString()}</p>
+</div>
+
+
       )}
     </div>
   );

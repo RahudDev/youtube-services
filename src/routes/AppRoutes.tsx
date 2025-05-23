@@ -17,6 +17,7 @@ import Privacy from '../pages/Privacy';
 import DeleteAccount from '../pages/DeleteUser';
 
 
+
 const AppRoutes = () => {
   return (
     <Routes>
