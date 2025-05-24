@@ -153,8 +153,8 @@ const Services = () => {
               <img
                 src={service.image}
                 alt={service.name}
-                className="card-img-top p-4"
-                style={{ height: '150px', objectFit: 'contain' }}
+                className="card-img-top-services p-4"
+                style={{ height: '150px', objectFit: 'contain'}}
               />
               <div className="card-body text-center">
                 <h5 className="card-title fw-semibold">{service.name}</h5>
