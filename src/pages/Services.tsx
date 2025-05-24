@@ -2,31 +2,45 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { API } from "../App";
 
+
+
 const Services = () => {
   const services = [
     {
       id: 'YT_001',
       name: 'YouTube Subscribers',
       price: '$1 / 100 subs',
-      image: 'https://img.icons8.com/color/96/youtube-play.png',
+      image: '/assets/subs.png',
     },
     {
       id: 'YT_002',
       name: 'Watch Hours',
       price: '$24 / 1000 hours',
-      image: 'https://img.icons8.com/color/96/time.png',
+      image: '/assets/watch-times.png',
     },
     {
       id: 'YT_003',
+      name: 'Video Views',
+      price: '$15 / 1000 views',
+      image: '/assets/views.png',
+    },
+     {
+      id: 'YT_004',
+      name: 'Short Video Views',
+      price: '$3 / 1000 short views',
+      image: '/assets/short.png',
+    },
+     {
+      id: 'YT_005',
       name: 'Video Likes',
-      price: '$5 / 100 likes',
-      image: 'https://img.icons8.com/color/96/facebook-like.png',
+      price: '$4 / 1000 likes',
+      image: '/assets/likes.png',
     },
     {
-      id: 'YT_004',
+      id: 'YT_006',
       name: 'Channel SEO Boost',
-      price: '$30',
-      image: 'https://od.lk/s/NjFfOTMzNDU5MDRf/Untitled%20design%20%284%29-Photoroom.png',
+      price: '$10 / 1 video',
+      image: '/assets/yt-seo.png',
     },
   ];
 
