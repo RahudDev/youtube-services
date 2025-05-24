@@ -57,6 +57,7 @@ const Header: React.FC = () => {
           <Link className='nav-milky'  to="/dashboard"  style={linkStyle}>Home</Link>
         <Link className='nav-milky'  to="/channel-info"style={linkStyle}>Insight</Link>
         <Link className='nav-milky'  to="/services" style={linkStyle}>Services</Link>
+        <Link className='nav-milky'  to="/academy" style={linkStyle}>Tips & Tricks</Link>
         </nav>
 
         {/* Hamburger Icon - Only visible on mobile */}
@@ -101,6 +102,7 @@ const Header: React.FC = () => {
         <Link className='nav-milky'  to="/dashboard" onClick={toggleMenu} style={sideMenuLinkStyle}>Home</Link>
         <Link className='nav-milky'  to="/channel-info" onClick={toggleMenu} style={sideMenuLinkStyle}>Insight</Link>
         <Link className='nav-milky'  to="/services" onClick={toggleMenu} style={sideMenuLinkStyle}>Services</Link>
+        <Link className='nav-milky'  to="/academy" onClick={toggleMenu} style={sideMenuLinkStyle}>Tips & Tricks</Link>
       </div>
 
       {/* Responsive styles */}

@@ -15,6 +15,8 @@ import Channeldata from '../pages/ChannelInfo';
 import Terms from '../pages/Terms';
 import Privacy from '../pages/Privacy';
 import DeleteAccount from '../pages/DeleteUser';
+import MilkyWayBlog from '../pages/MilkyWayBlog';
+import BlogRoutes from './BlogRoutes';
 
 
 
@@ -29,6 +31,8 @@ const AppRoutes = () => {
       <Route path="/completed" element={<YoutubeSuccess />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/privacy" element={<Privacy />} />
+      <Route path="/academy/*" element={<BlogRoutes />} />
+      <Route path="/academy" element={<MilkyWayBlog />} />
       <Route path="/deletion" element={<AuthGuard redirectIfVerified="" redirectIfNotVerified="/"> <DeleteAccount /> </AuthGuard>}/>
       <Route path="/signup" element={<AuthGuard redirectIfVerified="/dashboard" redirectIfNotVerified=""> <SignUp /> </AuthGuard>} />
       <Route path="/verifyemail" element={<AuthGuard redirectIfVerified="/dashboard" redirectIfNotVerified=""> <VerifyEmail /> </AuthGuard>} />
