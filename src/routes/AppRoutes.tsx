@@ -17,6 +17,7 @@ import Privacy from '../pages/Privacy';
 import DeleteAccount from '../pages/DeleteUser';
 import MilkyWayBlog from '../pages/MilkyWayBlog';
 import BlogRoutes from './BlogRoutes';
+import OrderHistory from '../pages/OrderHistory';
 
 
 
@@ -33,6 +34,7 @@ const AppRoutes = () => {
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/academy/*" element={<BlogRoutes />} />
       <Route path="/academy" element={<MilkyWayBlog />} />
+      <Route path="/my-orders" element={<AuthGuard redirectIfVerified="" redirectIfNotVerified="/"> <OrderHistory /> </AuthGuard>} />
       <Route path="/deletion" element={<AuthGuard redirectIfVerified="" redirectIfNotVerified="/"> <DeleteAccount /> </AuthGuard>}/>
       <Route path="/signup" element={<AuthGuard redirectIfVerified="/dashboard" redirectIfNotVerified=""> <SignUp /> </AuthGuard>} />
       <Route path="/verifyemail" element={<AuthGuard redirectIfVerified="/dashboard" redirectIfNotVerified=""> <VerifyEmail /> </AuthGuard>} />

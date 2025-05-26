@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { API } from "../App";
+import { useNavigate } from 'react-router-dom'; // ✅ import useNavigate
+
 
 
 
@@ -47,6 +49,8 @@ const Services = () => {
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
   const [warning, setWarning] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
+
 
   const handleQuantityChange = (id: string, increment: boolean) => {
     setQuantities((prev) => {
@@ -74,77 +78,86 @@ const Services = () => {
   };
 
   const handleCheckout = async (service: any) => {
-    const quantity = quantities[service.id];
+  const quantity = quantities[service.id];
 
-    if (!quantity || quantity < 1 || quantity > 100) {
-      setWarning('Quantity must be between 1 and 100');
+  if (!quantity || quantity < 1 || quantity > 100) {
+    setWarning('Quantity must be between 1 and 100');
+    return;
+  }
+
+  setLoading(true);
+  setWarning('');
+
+  try {
+    // ✅ Get user data from localStorage
+    const userData = JSON.parse(localStorage.getItem('user') || '{}');
+    const useremail = userData.email;
+
+    if (!useremail) {
+      window.location.href = "/signup";
       return;
     }
 
-    setLoading(true);
-    setWarning('');
+    // ✅ Check if user is verified
+    const verifyRes = await fetch(`${API}/api/auth/check-verification?email=${useremail}`);
+    const verifyData = await verifyRes.json();
 
-    try {
-      // Get user data from localStorage
-      const userData = JSON.parse(localStorage.getItem('user') || '{}');
-      const useremail = userData.email;
-
-      if (!useremail) {
-        window.location.href = "/signup";
-        return;
-      }
-
-      // Check if user is verified
-      const verifyRes = await fetch(`${API}/api/auth/check-verification?email=${useremail}`);
-      const verifyData = await verifyRes.json();
-
-      if (!verifyData.verified) {
-        window.location.href = "/signup";
-        return;
-      }
-
-      // Prepare cart with the selected service and quantity
-      const cart = [{ id: service.id, quantity }];
-      
-      console.log('Sending cart to backend:', cart);
-      
-      // Send request to create PayPal order
-      const response = await fetch(`${API}/api/paypal/orders`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(cart),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to create PayPal order');
-      }
-
-      const data = await response.json();
-      console.log('Order creation response:', data);
-
-      if (!data.jsonResponse || !data.jsonResponse.id) {
-        throw new Error('Invalid PayPal order response structure');
-      }
-
-      const orderId = data.jsonResponse.id;
-      
-      // Redirect to PayPal checkout
-     window.location.href = `https://www.paypal.com/checkoutnow?token=${orderId}`;
-      
-    } catch (err) {
-      console.error('Checkout process failed:', err);
-      setWarning(`Checkout failed: ${err instanceof Error ? err.message : 'Please try again later.'}`);
-    } finally {
-      setLoading(false);
+    if (!verifyData.verified) {
+      window.location.href = "/signup";
+      return;
     }
-  };
+
+    // ✅ Prepare cart with selected service and quantity
+    const cart = [{ id: service.id, quantity }];
+
+    console.log('Sending cart to backend:', cart);
+
+    // ✅ Send request to create PayPal order with email included
+    const response = await fetch(`${API}/api/paypal/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        cart,
+        email: useremail  // ✅ include email here
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to create PayPal order');
+    }
+
+    const data = await response.json();
+    console.log('Order creation response:', data);
+
+    if (!data.jsonResponse || !data.jsonResponse.id) {
+      throw new Error('Invalid PayPal order response structure');
+    }
+
+    const orderId = data.jsonResponse.id;
+
+    // ✅ Redirect to PayPal checkout
+    window.location.href = `https://www.paypal.com/checkoutnow?token=${orderId}`;
+
+  } catch (err) {
+    console.error('Checkout process failed:', err);
+    setWarning(`Checkout failed: ${err instanceof Error ? err.message : 'Please try again later.'}`);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="container py-5">
+        <div className="text-end mb-4">
+    <button className="btn btn-outline-primary rounded-pill" onClick={() => navigate('/my-orders')}>
+      View My Orders
+    </button>
+  </div>
       <h2 className="text-center mb-5 fw-bold">Our YouTube Services</h2>
       <div className="row justify-content-center">
         {services.map((service) => (

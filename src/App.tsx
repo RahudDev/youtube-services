@@ -1,4 +1,5 @@
 import React, {  useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { App as CapacitorApp } from '@capacitor/app';
 import './App.css';
 import AppRoutes from './routes/AppRoutes';
