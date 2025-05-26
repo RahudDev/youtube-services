@@ -34,7 +34,7 @@ const AppRoutes = () => {
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/academy/*" element={<BlogRoutes />} />
       <Route path="/academy" element={<MilkyWayBlog />} />
-      <Route path="/my-orders" element={<AuthGuard redirectIfVerified="" redirectIfNotVerified="/"> <OrderHistory /> </AuthGuard>} />
+      <Route path="/my-orders" element={<AuthGuard redirectIfVerified="" redirectIfNotVerified="/login"> <OrderHistory /> </AuthGuard>} />
       <Route path="/deletion" element={<AuthGuard redirectIfVerified="" redirectIfNotVerified="/"> <DeleteAccount /> </AuthGuard>}/>
       <Route path="/signup" element={<AuthGuard redirectIfVerified="/dashboard" redirectIfNotVerified=""> <SignUp /> </AuthGuard>} />
       <Route path="/verifyemail" element={<AuthGuard redirectIfVerified="/dashboard" redirectIfNotVerified=""> <VerifyEmail /> </AuthGuard>} />
