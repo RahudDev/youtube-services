@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css'; // Custom styles for animation
+import UserScreenshots from '../components/UserScreenshots';
 
 const Home = () => {
   return (
@@ -47,6 +48,8 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      <UserScreenshots/>
 
       {/* CTA Section */}
       <div className="text-center py-5 mt-5 bg-dark text-white">
