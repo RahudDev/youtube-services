@@ -18,6 +18,8 @@ import DeleteAccount from '../pages/DeleteUser';
 import MilkyWayBlog from '../pages/MilkyWayBlog';
 import BlogRoutes from './BlogRoutes';
 import OrderHistory from '../pages/OrderHistory';
+import CreatePayment from '../pages/nowPayments';
+import CryptoSuccess from '../pages/CryptoSuccess';
 
 
 
@@ -30,8 +32,10 @@ const AppRoutes = () => {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/completed" element={<YoutubeSuccess />} />
+      <Route path="/completed-crypto" element={<CryptoSuccess />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/privacy" element={<Privacy />} />
+      <Route path="/now-payments" element={<CreatePayment />} />
       <Route path="/academy/*" element={<BlogRoutes />} />
       <Route path="/academy" element={<MilkyWayBlog />} />
       <Route path="/my-orders" element={<AuthGuard redirectIfVerified="" redirectIfNotVerified="/login"> <OrderHistory /> </AuthGuard>} />

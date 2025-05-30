@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css'; // Custom styles for animation
 import UserScreenshots from '../components/UserScreenshots';
+import TrustedBy from '../components/TrustedBy';
 
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
           Get started
         </Link>
       </div>
+      <TrustedBy/>
 
       {/* Features Section */}
       <div className="container mt-5">

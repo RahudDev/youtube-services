@@ -9,36 +9,42 @@ const Login = () => {
   const [error, setError] = useState('');
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
+  e.preventDefault();
+  setError('');
 
-    try {
-      const response = await axios.post(`${API}/api/auth/login`, {
-        email,
-        password,
-      });
+  try {
+    // Get user IP geolocation
+    const geo = await fetch('https://ipapi.co/json').then(res => res.json());
 
-      const user = response.data.user;
+    const country = geo.country || '';
+    const flag = `https://flagcdn.com/w40/${country.toLowerCase()}.png`;
 
-      // Validation
-      if (!user.email || !user.uuid || !user.isVerified) {
-        setError("Your account is not verified or missing required information.");
-        return;
-      }
+    const response = await axios.post(`${API}/api/auth/login`, {
+      email,
+      password,
+      country,
+      flag
+    });
 
-      // Store only required data
-      const safeUser = {
-        name: user.name,
-        email: user.email,
-        username: user.username,
-      };
-      localStorage.setItem('user', JSON.stringify(safeUser));
+    const user = response.data.user;
 
-      window.location.reload();
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Login failed. Please try again.');
+    if (!user.email || !user.uuid || !user.isVerified) {
+      setError("Your account is not verified or missing required information.");
+      return;
     }
-  };
+
+    const safeUser = {
+      name: user.name,
+      email: user.email,
+      username: user.username,
+    };
+    localStorage.setItem('user', JSON.stringify(safeUser));
+    window.location.reload();
+  } catch (err: any) {
+    setError(err.response?.data?.error || 'Login failed. Please try again.');
+  }
+};
+
 
   return (
     <div className="container mt-5" style={{ maxWidth: '400px' }}>

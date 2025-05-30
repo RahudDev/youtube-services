@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API } from '../App';
@@ -8,15 +8,31 @@ const SignUp = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [countryCode, setCountryCode] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [flagUrl, setFlagUrl] = useState('');
   const navigate = useNavigate();
 
-  // Function to check if the username exists on YouTube
+  // ✅ Get user country code from IP
+  useEffect(() => {
+    const getCountry = async () => {
+      try {
+        const res = await axios.get('https://ipapi.co/json/');
+         const code = res.data.country_code;
+          setCountryCode(code);
+        setFlagUrl(`https://flagcdn.com/w80/${code.toLowerCase()}.png`);
+      } catch (err) {
+        console.error('Failed to get country info');
+      }
+    };
+    getCountry();
+  }, []);
+
   const checkUsernameExists = async () => {
     try {
       const response = await axios.post(`${API}/api/youtube/check-youtube-username`, { username });
-      return response.data.exists; // Assuming the backend returns { exists: true/false }
+      return response.data.exists;
     } catch (err) {
       setError('Failed to verify username. Please try again.');
       return false;
@@ -27,20 +43,16 @@ const SignUp = () => {
     e.preventDefault();
 
     if (!username.startsWith('@')) {
-      setError("Username must start with '@'");
-      return;
+      return setError("Username must start with '@'");
     }
 
-     if (password.length < 6) {
+    if (password.length < 6) {
       return setError('Password must be at least 6 characters long.');
     }
 
-    // Step 1: Check if the username exists on YouTube
     const usernameExists = await checkUsernameExists();
-
     if (!usernameExists) {
-      setError('YouTube channel with this username not found.');
-      return;
+      return setError('YouTube channel with this username not found.');
     }
 
     try {
@@ -52,15 +64,13 @@ const SignUp = () => {
         name,
         email,
         password,
+        country: countryCode, // ✅ Include country
+        flag: flagUrl, 
       });
 
       setSuccess(response.data.message);
 
-     const safeUser = {
-        name: name,
-        email: email,
-        username: username,
-      };
+      const safeUser = { name, email, username, country: countryCode };
       localStorage.setItem('user', JSON.stringify(safeUser));
 
       setUsername('');
@@ -78,17 +88,8 @@ const SignUp = () => {
     <div className="container mt-5" style={{ maxWidth: '400px' }}>
       <h2 className="text-center">Sign Up</h2>
       <form onSubmit={handleSignUp}>
-        {error && (
-          <div className="alert alert-danger py-2" role="alert">
-            {error}
-          </div>
-        )}
-
-        {success && (
-          <div className="alert alert-success py-2" role="alert">
-            {success}
-          </div>
-        )}
+        {error && <div className="alert alert-danger py-2">{error}</div>}
+        {success && <div className="alert alert-success py-2">{success}</div>}
 
         <div className="form-group mb-3">
           <label>Username Channel</label>

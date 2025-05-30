@@ -49,6 +49,7 @@ const Services = () => {
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
   const [warning, setWarning] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [paymentMethod, setPaymentMethod] = useState<'' | 'paypal' | 'crypto'>('');
   const navigate = useNavigate();
 
 
@@ -85,70 +86,65 @@ const Services = () => {
     return;
   }
 
+   if (!paymentMethod) {
+    setWarning('Please select a payment method.');
+    return;
+  }
+
   setLoading(true);
   setWarning('');
 
   try {
-    // ✅ Get user data from localStorage
     const userData = JSON.parse(localStorage.getItem('user') || '{}');
     const useremail = userData.email;
 
-    if (!useremail) {
-      window.location.href = "/signup";
-      return;
-    }
+    if (!useremail) return (window.location.href = "/signup");
 
-    // ✅ Check if user is verified
     const verifyRes = await fetch(`${API}/api/auth/check-verification?email=${useremail}`);
     const verifyData = await verifyRes.json();
 
-    if (!verifyData.verified) {
-      window.location.href = "/signup";
-      return;
-    }
+    if (!verifyData.verified) return (window.location.href = "/signup");
 
-    // ✅ Prepare cart with selected service and quantity
     const cart = [{ id: service.id, quantity }];
 
-    console.log('Sending cart to backend:', cart);
+    let response;
+    if (paymentMethod === 'paypal') {
+      response = await fetch(`${API}/api/paypal/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({ cart, email: useremail }),
+      });
 
-    // ✅ Send request to create PayPal order with email included
-    const response = await fetch(`${API}/api/paypal/orders`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        cart,
-        email: useremail  // ✅ include email here
-      }),
-    });
+      const data = await response.json();
+      if (!data?.jsonResponse?.id) throw new Error('Invalid PayPal response');
+      window.location.href = `https://www.paypal.com/checkoutnow?token=${data.jsonResponse.id}`;
+    } else {
+      // Example for crypto (NOWPayments or your own endpoint)
+      response = await fetch(`${API}/api/crypto/create-payment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({ cart, email: useremail }),
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Failed to create PayPal order');
+     const data = await response.json();
+     if (!data?.invoice?.invoice_url) throw new Error('Invalid crypto response');
+     window.location.href = data.invoice.invoice_url;
+
     }
-
-    const data = await response.json();
-    console.log('Order creation response:', data);
-
-    if (!data.jsonResponse || !data.jsonResponse.id) {
-      throw new Error('Invalid PayPal order response structure');
-    }
-
-    const orderId = data.jsonResponse.id;
-
-    // ✅ Redirect to PayPal checkout
-    window.location.href = `https://www.paypal.com/checkoutnow?token=${orderId}`;
-
   } catch (err) {
-    console.error('Checkout process failed:', err);
-    setWarning(`Checkout failed: ${err instanceof Error ? err.message : 'Please try again later.'}`);
+    console.error('Checkout failed:', err);
+    setWarning(`Checkout failed: ${err instanceof Error ? err.message : 'Try again later.'}`);
   } finally {
     setLoading(false);
   }
 };
+
 
 
   return (
@@ -198,6 +194,22 @@ const Services = () => {
                     +
                   </button>
                 </div>
+               <div className="mb-3">
+  <select
+    className="form-select"
+    value={paymentMethod}
+    onChange={(e) => setPaymentMethod(e.target.value as 'paypal' | 'crypto')}
+    disabled={loading}
+  >
+    <option value="" disabled>
+      Select payment method
+    </option>
+    <option value="paypal">PayPal & Debit/Credit card</option>
+    <option value="crypto">Crypto (Litecoin)</option>
+  </select>
+</div>
+
+
                 {warning && (
                   <div className="alert alert-warning text-center py-2 mb-3">{warning}</div>
                 )}
