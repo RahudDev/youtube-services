@@ -84,8 +84,8 @@ const OrderHistory: React.FC = () => {
                 borderTopRightRadius: "0.5rem",
               }}
             >
-              <h2 className="fw-bold mb-0">🛒 Your Order History</h2>
-              <p className="mb-0 small">Track your previous purchases easily</p>
+              <h2 className="fw-bold mb-0">🛒 My Order History</h2>
+              <p className="mb-0 small">Track my previous purchases easily</p>
             </div>
 
             <div className="card-body p-4">

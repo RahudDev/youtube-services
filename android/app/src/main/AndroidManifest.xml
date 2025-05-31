@@ -36,6 +36,9 @@
     <data android:scheme="https"
           android:host="www.milkywaycluster.com"
           android:pathPrefix="/completed" />
+    <data android:scheme="https"
+          android:host="www.milkywaycluster.com"
+          android:pathPrefix="/completed-crypto" />
 </intent-filter>
 
 

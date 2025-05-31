@@ -14,7 +14,7 @@ const App = () => {
 
 
 
-  useEffect(() => {
+ useEffect(() => {
   let listener: any;
 
   CapacitorApp.addListener('appUrlOpen', (event) => {
@@ -23,6 +23,7 @@ const App = () => {
       const parsedUrl = new URL(url);
       const pathname = parsedUrl.pathname;
       const token = parsedUrl.searchParams.get('token');
+      const np_id = parsedUrl.searchParams.get('NP_id');
 
       if (pathname === '/confirm-email' && token) {
         window.location.href = `/confirm-email?token=${token}`;
@@ -30,6 +31,8 @@ const App = () => {
         window.location.href = `/reset-password?token=${token}`;
       } else if (pathname === '/completed' && token) {
         window.location.href = `/completed?token=${token}`;
+      } else if (pathname === '/completed-crypto' && np_id) {
+        window.location.href = `/completed-crypto?NP_id=${np_id}`;
       }
     }
   }).then((res) => {
@@ -42,6 +45,7 @@ const App = () => {
     }
   };
 }, []);
+
 
 
 
