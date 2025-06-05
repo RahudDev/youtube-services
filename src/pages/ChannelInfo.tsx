@@ -22,20 +22,23 @@ const Channeldata: React.FC = () => {
   const [channel, setChannel] = useState<ChannelInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [usingFallback, setUsingFallback] = useState(false);
 
   useEffect(() => {
     const fetchChannelData = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user') || '{}');
-
+        
+        // ✅ Use fallback username if not found in localStorage
+        const username = user.username || '@youtube';
+        
+        // ✅ Track if we're using fallback
         if (!user.username) {
-          setError('Username not found in local storage.');
-          setLoading(false);
-          return;
+          setUsingFallback(true);
         }
 
         const { data } = await axios.post(`${API}/api/youtube/get-channel-info`, {
-          username: user.username,
+          username: username,
         });
 
         const snippet = data.channelInfo.snippet;
@@ -65,6 +68,14 @@ const Channeldata: React.FC = () => {
 
   return (
     <div className="container mt-5">
+      {/* ✅ Optional: Show notification when using fallback */}
+      {usingFallback && (
+        <div className="alert alert-info mb-3">
+          <i className="bi bi-info-circle me-2"></i>
+          Displaying sample channel data. Please complete your profile to see your own channel statistics.
+        </div>
+      )}
+      
       <div className="card shadow rounded-4 p-4">
         <div className="d-flex align-items-center mb-4">
           <img

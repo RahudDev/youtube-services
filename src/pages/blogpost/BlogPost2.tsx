@@ -5,7 +5,7 @@ const BlogPost2 = () => {
     <div className="container py-5">
       <h1 className="mb-4 fw-bold">Make Money from YouTube Without 1,000 Subs</h1>
       <p className="text-muted">August 9, 2025</p>
-      <img src="/assets/blog/make-money-youtube.png" alt="Make Money on YouTube" className="img-fluid rounded-4 my-4" />
+      
       <p>
         Think you need 1,000 subscribers to earn from YouTube? Think again. In 2025, there are several ways to
         monetize your content even before reaching the YouTube Partner Program threshold. While YouTube ad revenue

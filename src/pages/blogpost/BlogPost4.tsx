@@ -2,7 +2,6 @@ export const BlogPost4 = () => (
   <div className="container py-5">
     <h1 className="fw-bold mb-3">Boost Watch Time with These Simple Tricks</h1>
     <p className="text-muted">August 7, 2025</p>
-    <img src="/assets/blog/watchtime-tricks.png" alt="Watch Time Tricks" className="img-fluid rounded mb-4" />
     <p>
       Watch time is one of the most important ranking signals on YouTube. The longer users stay engaged with your video, the more likely it is to be recommended. Here’s how to maximize viewer retention and boost your channel’s performance.
     </p>

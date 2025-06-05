@@ -11,6 +11,22 @@ const Header: React.FC = () => {
       const savedTheme = localStorage.getItem('theme');
       return savedTheme !== 'light'; // Default to dark mode
     });
+
+
+      const [isAffiliate, setIsAffiliate] = useState(false);
+
+       // ✅ Check localStorage for affiliate status on mount
+  useEffect(() => {
+    try {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (user.affiliate === true) {
+        setIsAffiliate(true);
+      }
+    } catch (e) {
+      console.error('Error parsing user from localStorage:', e);
+    }
+  }, []);
+
   
     const toggleTheme = () => {
       setDarkMode((prevMode) => {
@@ -54,10 +70,14 @@ const Header: React.FC = () => {
         
         {/* Desktop Navigation - visible on desktop only */}
         <nav className="nav-links-desktop" style={{marginRight: '150px'}}>
+           {isAffiliate && (
+            <Link className="nav-milky" to="/affiliate-dashboard" style={linkStyle}>Affiliate Dashboard</Link>
+          )}
           <Link className='nav-milky'  to="/dashboard"  style={linkStyle}>Home</Link>
         <Link className='nav-milky'  to="/channel-info"style={linkStyle}>Insight</Link>
         <Link className='nav-milky'  to="/services" style={linkStyle}>Services</Link>
         <Link className='nav-milky'  to="/academy" style={linkStyle}>Tips & Tricks</Link>
+        
         </nav>
 
         {/* Hamburger Icon - Only visible on mobile */}
@@ -99,6 +119,9 @@ const Header: React.FC = () => {
       </button>
           </div>
         </div>
+           {isAffiliate && (
+          <Link className="nav-milky" to="/affiliate-dashboard" onClick={toggleMenu} style={sideMenuLinkStyle}>Affiliate Dashboard</Link>
+        )}
         <Link className='nav-milky'  to="/dashboard" onClick={toggleMenu} style={sideMenuLinkStyle}>Home</Link>
         <Link className='nav-milky'  to="/channel-info" onClick={toggleMenu} style={sideMenuLinkStyle}>Insight</Link>
         <Link className='nav-milky'  to="/services" onClick={toggleMenu} style={sideMenuLinkStyle}>Services</Link>

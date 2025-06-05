@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API } from '../App';
+import { useSearchParams } from 'react-router-dom';
 
 const VerifyEmail = () => {
   const [seconds, setSeconds] = useState(10);
   const [isResendEnabled, setIsResendEnabled] = useState(false);
+  const [searchParams] = useSearchParams();
+
+  const isAffiliate = searchParams.get('affiliate') === 'true';
 
   useEffect(() => {
     if (seconds > 0) {
@@ -27,7 +31,10 @@ const VerifyEmail = () => {
     }
 
     try {
-      await axios.post(`${API}/api/auth/resend-verifyemail`, { email });
+      await axios.post(`${API}/api/auth/resend-verifyemail`, {
+        email,
+        affiliate: isAffiliate,
+      });
       setSeconds(10);
       setIsResendEnabled(false);
     } catch (error) {
@@ -45,10 +52,7 @@ const VerifyEmail = () => {
       <p>If you didn’t receive the email, check your spam or junk folder.</p>
 
       {isResendEnabled ? (
-        <button
-          className="btn btn-primary mt-4"
-          onClick={handleResendVerification}
-        >
+        <button className="btn btn-primary mt-4" onClick={handleResendVerification}>
           Resend Verification Email
         </button>
       ) : (

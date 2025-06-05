@@ -11,20 +11,27 @@ const EmailVerificationConfirm = () => {
 
   useEffect(() => {
     const token = searchParams.get('token');
+    const isAffiliate = searchParams.get('affiliate') === 'true';
+
     if (token) {
-      verifyToken(token);
+      verifyToken(token, isAffiliate);
     } else {
       setError('Invalid verification link.');
     }
   }, [searchParams]);
 
-  const verifyToken = async (token: string) => {
+  const verifyToken = async (token: string, isAffiliate: boolean) => {
     try {
       const response = await axios.get(`${API}/api/auth/verify-email?token=${token}`);
       setMessage(response.data.message);
+
       setTimeout(() => {
-        navigate('/login');
-      }, 3000); // Redirect to login after 3 seconds
+        if (isAffiliate) {
+          navigate('/affiliate/pending-application');
+        } else {
+          navigate('/dashboard');
+        }
+      }, 3000); // Redirect after 3 seconds
     } catch (err: any) {
       setError(err.response?.data?.error || 'Verification failed.');
     }
@@ -35,7 +42,7 @@ const EmailVerificationConfirm = () => {
       <h2>Email Verification</h2>
       {message && <div className="alert alert-success mt-4">{message}</div>}
       {error && <div className="alert alert-danger mt-4">{error}</div>}
-      {message && <p>Redirecting to login page...</p>}
+      {message && <p>Redirecting to your dashboard...</p>}
     </div>
   );
 };

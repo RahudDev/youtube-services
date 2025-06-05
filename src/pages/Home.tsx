@@ -1,11 +1,25 @@
 // src/pages/Home.tsx
-import React from 'react';
+import React,{useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css'; // Custom styles for animation
 import UserScreenshots from '../components/UserScreenshots';
 import TrustedBy from '../components/TrustedBy';
 
 const Home = () => {
+
+    useEffect(() => {
+    const currentUrl = window.location.href;
+    const parsedUrl = new URL(currentUrl);
+    const referral = parsedUrl.searchParams.get('ref');
+
+    const user = localStorage.getItem('user');
+
+    // ✅ Store referral only if user not logged in
+    if (referral && !user) {
+      localStorage.setItem('referredBy', referral);
+    }
+  }, []);
+
   return (
     <div className="home-gradient">
       {/* Hero Section */}

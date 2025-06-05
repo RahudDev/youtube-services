@@ -103,7 +103,7 @@ const Privacy: React.FC = () => {
 
       <h2>Contact Us</h2>
       <p>
-        Questions? Reach us at: <strong>milkywaycluster0@gmail.com</strong>
+        Questions? Reach us at: <strong><a href="mailto:milkywaycluster0@gmail.com">milkywaycluster0@gmail.com</a></strong>
       </p>
     </div>
   );

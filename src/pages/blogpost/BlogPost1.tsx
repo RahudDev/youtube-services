@@ -6,7 +6,7 @@ const BlogPost1 = () => {
     <div className="container py-5">
       <h1 className="mb-4 fw-bold">How to Grow Your YouTube Channel in 2025</h1>
       <p className="text-muted">August 10, 2025</p>
-      <img src="/assets/blog/youtube-growth.png" alt="Grow Your YouTube" className="img-fluid rounded-4 my-4" />
+      
       <p>
         Growing a YouTube channel in 2025 requires more than just uploading videos—it demands strategic planning,
         audience understanding, and consistent effort. With over 2 billion logged-in users monthly, YouTube remains

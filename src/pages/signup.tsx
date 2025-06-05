@@ -40,49 +40,76 @@ const SignUp = () => {
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!username.startsWith('@')) {
-      return setError("Username must start with '@'");
+  if (!username.startsWith('@')) {
+    return setError("Username must start with '@'");
+  }
+
+  if (password.length < 6) {
+    return setError('Password must be at least 6 characters long.');
+  }
+
+  const usernameExists = await checkUsernameExists();
+  if (!usernameExists) {
+    return setError('YouTube channel with this username not found.');
+  }
+
+  try {
+    setError('');
+    setSuccess('');
+
+    // ✅ Get referral code if exists
+    const referredBy = localStorage.getItem('referredBy');
+
+    const requestData: any = {
+      username,
+      name,
+      email,
+      password,
+      country: countryCode,
+      flag: flagUrl,
+    };
+
+    // ✅ Only include referredBy if it exists
+    if (referredBy) {
+      requestData.referredBy = referredBy;
     }
 
-    if (password.length < 6) {
-      return setError('Password must be at least 6 characters long.');
-    }
+    const response = await axios.post(`${API}/api/auth/signup`, requestData);
 
-    const usernameExists = await checkUsernameExists();
-    if (!usernameExists) {
-      return setError('YouTube channel with this username not found.');
-    }
+    setSuccess(response.data.message);
 
-    try {
-      setError('');
-      setSuccess('');
+    const safeUser = { name, email, username, country: countryCode };
+    localStorage.setItem('user', JSON.stringify(safeUser));
 
-      const response = await axios.post(`${API}/api/auth/signup`, {
-        username,
-        name,
-        email,
-        password,
-        country: countryCode, // ✅ Include country
-        flag: flagUrl, 
-      });
+    setUsername('');
+    setName('');
+    setEmail('');
+    setPassword('');
 
-      setSuccess(response.data.message);
+    // Optional: remove referral code after successful signup
+    localStorage.removeItem('referredBy');
 
-      const safeUser = { name, email, username, country: countryCode };
-      localStorage.setItem('user', JSON.stringify(safeUser));
-
-      setUsername('');
-      setName('');
-      setEmail('');
-      setPassword('');
-
+    navigate('/verifyemail');
+  } catch (err: any) {
+    const errorMsg = err.response?.data?.error || 'Signup failed. Please try again.';
+    
+    // ✅ If email exists but not verified, redirect
+    if (errorMsg === 'Email signed up but not yet verified') {
       navigate('/verifyemail');
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Signup failed. Please try again.');
+    } 
+
+    else if (errorMsg === 'Email signed up as affiliate but not yet verified') {
+      navigate('/verifyemail?affiliate=true');
+    } 
+    
+    else {
+      setError(errorMsg);
     }
-  };
+  }
+};
+
 
   return (
     <div className="container mt-5" style={{ maxWidth: '400px' }}>

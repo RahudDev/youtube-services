@@ -20,6 +20,12 @@ import BlogRoutes from './BlogRoutes';
 import OrderHistory from '../pages/OrderHistory';
 import CreatePayment from '../pages/nowPayments';
 import CryptoSuccess from '../pages/CryptoSuccess';
+import AffiliateProgram from '../pages/AffiliateProgram';
+import AffiliateDashboard from '../pages/AffiliateDashboard';
+import AffiliateDashboardRoutes from './Affiliate-dashboard-routes';
+import AffiliateProgramRoutes from './Affiliate-program';
+import AffiliateGuard from './AffiliateGuard';
+import PendingApplication from '../components/affiliate-components/PendingApplication';
 
 
 
@@ -34,6 +40,11 @@ const AppRoutes = () => {
       <Route path="/completed" element={<YoutubeSuccess />} />
       <Route path="/completed-crypto" element={<CryptoSuccess />} />
       <Route path="/terms" element={<Terms />} />
+      <Route path="/affiliate-program" element={<AffiliateGuard redirectIfAffiliator="/affiliate-dashboard" redirectIfNotAffiliator=""> <AffiliateProgram /> </AffiliateGuard>} />
+      <Route path="/affiliate-program/*" element={<AffiliateGuard redirectIfAffiliator="/affiliate-dashboard" redirectIfNotAffiliator=""> <AffiliateProgramRoutes /> </AffiliateGuard>} />
+      <Route path="/affiliate-dashboard" element={<AffiliateGuard redirectIfAffiliator="" redirectIfNotAffiliator="/affiliate-program"> <AffiliateDashboard /> </AffiliateGuard>} />
+      <Route path="/affiliate-dashboard/*" element={<AffiliateGuard redirectIfAffiliator="" redirectIfNotAffiliator="/affiliate-program"> <AffiliateDashboardRoutes /> </AffiliateGuard>} />
+      <Route path="/affiliate/pending-application" element={<PendingApplication />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/now-payments" element={<CreatePayment />} />
       <Route path="/academy/*" element={<BlogRoutes />} />

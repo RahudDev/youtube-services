@@ -16,7 +16,7 @@ interface VideoData {
 
 const VideoStatsPage: React.FC = () => {
   const [videoTitle, setVideoTitle] = useState('');
-  const [username, setUsername] = useState('@rahuddev');
+  const [username, setUsername] = useState('@youtube');
   const [videoData, setVideoData] = useState<VideoData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

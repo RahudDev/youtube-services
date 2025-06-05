@@ -24,6 +24,7 @@ const App = () => {
       const pathname = parsedUrl.pathname;
       const token = parsedUrl.searchParams.get('token');
       const np_id = parsedUrl.searchParams.get('NP_id');
+     
 
       if (pathname === '/confirm-email' && token) {
         window.location.href = `/confirm-email?token=${token}`;
@@ -45,6 +46,14 @@ const App = () => {
     }
   };
 }, []);
+
+  // ✅ Remove referralCode if user is logged in
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user && localStorage.getItem('referredBy')) {
+      localStorage.removeItem('referredBy');
+    }
+  }, []);
 
 
 

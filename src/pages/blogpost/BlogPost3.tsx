@@ -4,7 +4,7 @@ export const BlogPost3 = () => (
   <div className="container py-5">
     <h1 className="fw-bold mb-3">Top SEO Tips to Rank Your Videos Faster</h1>
     <p className="text-muted">August 8, 2025</p>
-    <img src="/assets/blog/seo-tips.png" alt="SEO Tips" className="img-fluid rounded mb-4" />
+    
     <p>
       Ranking on YouTube is not just about uploading content — it’s about making your content discoverable. With millions of videos uploaded daily, mastering video SEO is the key to visibility and growth. Here are advanced strategies to push your videos to the top of search results in 2025.
     </p>

@@ -79,7 +79,7 @@ const OrderHistory: React.FC = () => {
             <div
               className="card-header text-white text-center py-4"
               style={{
-                background: "linear-gradient(90deg, #4e54c8, #8f94fb)",
+                background: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)",
                 borderTopLeftRadius: "0.5rem",
                 borderTopRightRadius: "0.5rem",
               }}
@@ -109,7 +109,7 @@ const OrderHistory: React.FC = () => {
                 <>
                   <div className="table-responsive">
                     <table className="table table-hover align-middle">
-                      <thead className="table-light">
+                      <thead className="table-primary">
                         <tr>
                           <th>Order ID</th>
                           <th>Date</th>

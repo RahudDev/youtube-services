@@ -71,7 +71,7 @@ const Terms: React.FC = () => {
       <hr />
 
       <h2>Contact</h2>
-      <p>Questions? Contact us at: <strong>milkywaycluster0@gmail.com</strong></p>
+      <p>Questions? Contact us at: <strong><a href="mailto:milkywaycluster0@gmail.com">milkywaycluster0@gmail.com</a></strong></p>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API } from '../App';
 
@@ -7,8 +7,10 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
+  
 
-  const handleLogin = async (e: React.FormEvent) => {
+ const handleLogin = async (e: React.FormEvent) => {
   e.preventDefault();
   setError('');
 
@@ -33,17 +35,46 @@ const Login = () => {
       return;
     }
 
-    const safeUser = {
+    const safeUser: {
+      name: string;
+      email: string;
+      username: string;
+      affiliate?: boolean;
+    } = {
       name: user.name,
       email: user.email,
       username: user.username,
     };
+
+    // ✅ Only store affiliateData and affiliate flag if affiliator is true
+    if (user.affiliateData?.affiliator === true) {
+      safeUser.affiliate = true;
+    }
+
     localStorage.setItem('user', JSON.stringify(safeUser));
+    localStorage.removeItem('referredBy');
     window.location.reload();
   } catch (err: any) {
-    setError(err.response?.data?.error || 'Login failed. Please try again.');
+    const errorMsg = err.response?.data?.error || 'Login failed. Please try again.';
+    const isAffiliate = err.response?.data?.affiliate;
+
+    // ✅ Redirect based on affiliate status if not verified
+    if (
+      errorMsg.includes('not yet verified') ||
+      errorMsg.includes('not verified')
+    ) {
+      if (isAffiliate) {
+        navigate('/verifyemail?affiliate=true');
+      } else {
+        navigate('/verifyemail');
+      }
+      return;
+    }
+
+    setError(errorMsg);
   }
 };
+
 
 
   return (

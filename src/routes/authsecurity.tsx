@@ -18,7 +18,8 @@ const AuthGuard: React.FC<AuthGuardProps> = ({
   const [authenticated, setAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+ useEffect(() => {
+  const checkVerification = async () => {
     const userData = JSON.parse(localStorage.getItem('user') || '{}');
     const useremail = userData.email;
 
@@ -28,17 +29,19 @@ const AuthGuard: React.FC<AuthGuardProps> = ({
       return;
     }
 
-    axios
-      .get(`${API}/api/auth/check-verification?email=${useremail}`)
-      .then((res) => {
-        setAuthenticated(res.data.verified);
-        setLoading(false);
-      })
-      .catch(() => {
-        setAuthenticated(false);
-        setLoading(false);
-      });
-  }, []);
+    try {
+      const res = await axios.get(`${API}/api/auth/check-verification?email=${useremail}`);
+      setAuthenticated(res.data.verified);
+    } catch (err) {
+      setAuthenticated(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  checkVerification();
+}, []);
+
 
   if (loading) return <p>Loading...</p>;
 
