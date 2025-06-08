@@ -8,6 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   DotProps,
+  TooltipProps,
 } from 'recharts';
 import axios from 'axios';
 import { API } from '../../App';
@@ -25,6 +26,26 @@ interface ChartData {
 interface ReferralStatsChartProps {
   onBalanceUpdate: (balance: number) => void;
 }
+
+
+const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
+  if (active && payload && payload.length) {
+    const data = payload[0];
+    return (
+      <div className="custom-tooltip">
+        <div className="tooltip-header">
+          <div className="tooltip-indicator"></div>
+          <span className="tooltip-day">{label}</span>
+        </div>
+        <div className="tooltip-content">
+          <div className="tooltip-label">Daily Profit</div>
+          <div className="tooltip-value">${data.value?.toFixed(2) || '0.00'}</div>
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
 
 // Custom animated dot for the last point
 const ActiveDot = (props: CustomDotProps) => {
@@ -106,7 +127,7 @@ const ReferralStatsChart: React.FC<ReferralStatsChartProps> = ({ onBalanceUpdate
             <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
             <XAxis dataKey="day" />
             <YAxis />
-            <Tooltip />
+           <Tooltip content={<CustomTooltip />} />
             {chartContent}
           </LineChart>
         </ResponsiveContainer>
@@ -131,6 +152,100 @@ const ReferralStatsChart: React.FC<ReferralStatsChartProps> = ({ onBalanceUpdate
             r: 6;
             opacity: 1;
           }
+        }
+
+         .custom-tooltip {
+          position: relative;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border: none;
+          border-radius: 12px;
+          padding: 0;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1);
+          color: white;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          min-width: 180px;
+          backdrop-filter: blur(10px);
+          transform: translateY(-10px);
+          animation: tooltipFadeIn 0.3s ease-out;
+        }
+
+        @keyframes tooltipFadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-5px) scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(-10px) scale(1);
+          }
+        }
+
+        .tooltip-header {
+          display: flex;
+          align-items: center;
+          padding: 12px 16px 8px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .tooltip-indicator {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: linear-gradient(45deg, #ff6b6b, #feca57);
+          margin-right: 8px;
+          box-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
+        }
+
+        .tooltip-day {
+          font-size: 12px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: rgba(255, 255, 255, 0.9);
+        }
+
+        .tooltip-content {
+          padding: 8px 16px 12px;
+        }
+
+        .tooltip-label {
+          font-size: 11px;
+          color: rgba(255, 255, 255, 0.7);
+          margin-bottom: 4px;
+          text-transform: uppercase;
+          letter-spacing: 0.3px;
+        }
+
+        .tooltip-value {
+          font-size: 18px;
+          font-weight: 700;
+          color: #fff;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+       
+
+        /* Hover effect for the entire chart area */
+        .recharts-wrapper:hover .custom-tooltip {
+          transform: translateY(-12px) scale(1.02);
+          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2), 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Alternative tooltip styles for variety */
+        .custom-tooltip.variant-2 {
+          background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+        }
+
+        .custom-tooltip.variant-3 {
+          background: linear-gradient(135deg, #00c9ff 0%, #92fe9d 100%);
+        }
+
+        .custom-tooltip.variant-4 {
+          background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%);
+        }
+
+        .custom-tooltip.variant-5 {
+          background: linear-gradient(135deg, #fdbb2d 0%, #22c1c3 100%);
         }
       `}</style>
     </section>

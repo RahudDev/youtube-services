@@ -41,21 +41,41 @@ const ReferralsTable: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = Math.abs(now.getTime() - date.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+ const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffTime = Math.abs(now.getTime() - date.getTime());
+  const diffMinutes = Math.floor(diffTime / (1000 * 60));
+  const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 1) return '1 day ago';
-    if (diffDays < 30) return `${diffDays} days ago`;
-    if (diffDays < 365) {
-      const months = Math.floor(diffDays / 30);
-      return months === 1 ? '1 month ago' : `${months} months ago`;
-    }
-    const years = Math.floor(diffDays / 365);
-    return years === 1 ? '1 year ago' : `${years} years ago`;
-  };
+  // Show minutes if joined within the last hour
+  if (diffHours === 0) {
+    if (diffMinutes === 0) return 'Just now';
+    return diffMinutes === 1 ? '1 minute ago' : `${diffMinutes} minutes ago`;
+  }
+
+  // Show hours if joined within the last 24 hours
+  if (diffHours < 24) {
+    return diffHours === 1 ? '1 hour ago' : `${diffHours} hours ago`;
+  }
+  
+  // Show days for 1-29 days
+  if (diffDays === 1) return '1 day ago';
+  if (diffDays < 30) return `${diffDays} days ago`;
+  
+  // Show months for 1-11 months
+  if (diffDays < 365) {
+    const months = Math.floor(diffDays / 30);
+    return months === 1 ? '1 month ago' : `${months} months ago`;
+  }
+  
+  // Show years for 1+ years
+  const years = Math.floor(diffDays / 365);
+  return years === 1 ? '1 year ago' : `${years} years ago`;
+};
+
+
 
   const renderCountryWithFlag = (flagUrl: string, countryCode: string) => {
     // Check if flagUrl is a valid URL

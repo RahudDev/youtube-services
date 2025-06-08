@@ -32,6 +32,11 @@ const CryptoSuccess: React.FC = () => {
 
   const NP_id = searchParams.get("NP_id");
 
+   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const messengerLink = isMobile
+  ? "https://m.me/milkywayclusters"
+  : "https://m.me/27591365487176004";
+
   useEffect(() => {
     const fetchOrder = async () => {
       try {
@@ -124,7 +129,7 @@ const CryptoSuccess: React.FC = () => {
       </div>
 
       {purchasedItems.length > 0 && (
-        <div className="mt-5">
+        <div className="mt-5" style={{marginBottom : '100px',}}>
           <h4 className="text-center mb-4">Youtube Services Order</h4>
           <div className="row justify-content-center">
             {purchasedItems.map((item, index) => (
@@ -157,6 +162,14 @@ const CryptoSuccess: React.FC = () => {
             <h5 className="fw-bold text-success">
               💰 Total Paid: ${totalAmount} USD
             </h5>
+              <a
+              href={messengerLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary mt-3"
+            >
+              💬 Message us
+            </a>
           </div>
         </div>
       )}

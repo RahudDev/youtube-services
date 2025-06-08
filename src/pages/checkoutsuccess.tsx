@@ -18,6 +18,12 @@ const PaypalSuccess = () => {
 
   const hasRun = useRef(false); // Prevent duplicate fetches in dev mode
 
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const messengerLink = isMobile
+  ? "https://m.me/milkywayclusters"
+  : "https://m.me/27591365487176004";
+
+
   useEffect(() => {
     if (hasRun.current) return;
     hasRun.current = true;
@@ -116,6 +122,14 @@ const PaypalSuccess = () => {
             <h5 className="fw-bold text-success">
               💰 Total Paid: ${total.toFixed(2)} USD
             </h5>
+              <a
+              href={messengerLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary mt-3"
+            >
+              💬 Message us
+            </a>
           </div>
         </div>
       )}

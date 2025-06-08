@@ -37,14 +37,14 @@ const Footer: React.FC = () => {
             gap: '1.5rem',
           }}
         >
-          <li>
+           <li>
             <a
-              href="/terms"
-              onClick={handleClick('/terms')}
+              href="/affiliate-program"
+              onClick={handleClick('/affiliate-program')}
               style={{ color: '#007bff', textDecoration: 'none', cursor: 'pointer' }}
-              aria-label="Terms of Service"
+              aria-label="Partner with Us"
             >
-              Terms of Service
+              Partner with Us
             </a>
           </li>
           <li>
@@ -57,14 +57,15 @@ const Footer: React.FC = () => {
               Privacy Policy
             </a>
           </li>
-          <li>
+
+           <li>
             <a
-              href="/affiliate-program"
-              onClick={handleClick('/affiliate-program')}
+              href="/terms"
+              onClick={handleClick('/terms')}
               style={{ color: '#007bff', textDecoration: 'none', cursor: 'pointer' }}
-              aria-label="Partner with Us"
+              aria-label="Terms of Service"
             >
-              Partner with Us
+              Terms of Service
             </a>
           </li>
         </ul>

@@ -13,6 +13,13 @@ const Header: React.FC = () => {
     });
 
 
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+const messengerLink = isMobile
+  ? "https://m.me/milkywayclusters"
+  : "https://m.me/27591365487176004";
+
+
+
       const [isAffiliate, setIsAffiliate] = useState(false);
 
        // ✅ Check localStorage for affiliate status on mount
@@ -77,6 +84,15 @@ const Header: React.FC = () => {
         <Link className='nav-milky'  to="/channel-info"style={linkStyle}>Insight</Link>
         <Link className='nav-milky'  to="/services" style={linkStyle}>Services</Link>
         <Link className='nav-milky'  to="/academy" style={linkStyle}>Tips & Tricks</Link>
+          <a
+    href={messengerLink}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="nav-milky"
+    style={linkStyle}
+  >
+    Message Us
+  </a>
         
         </nav>
 
@@ -126,6 +142,15 @@ const Header: React.FC = () => {
         <Link className='nav-milky'  to="/channel-info" onClick={toggleMenu} style={sideMenuLinkStyle}>Insight</Link>
         <Link className='nav-milky'  to="/services" onClick={toggleMenu} style={sideMenuLinkStyle}>Services</Link>
         <Link className='nav-milky'  to="/academy" onClick={toggleMenu} style={sideMenuLinkStyle}>Tips & Tricks</Link>
+          <a
+    href={messengerLink}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="nav-milky"
+    style={sideMenuLinkStyle}
+  >
+    Message Us
+  </a>
       </div>
 
       {/* Responsive styles */}
